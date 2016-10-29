@@ -1,5 +1,4 @@
-import pyglet
-from guiChess import Chess
+from guiChess import Chess, pyglet
 
 def main():
     mygame = Chess()

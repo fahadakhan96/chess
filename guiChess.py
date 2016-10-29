@@ -1,7 +1,7 @@
 import pyglet
 
-class Chess(pyglet.window.Window):
 
+class Chess(pyglet.window.Window):
     chessboard = pyglet.resource.image('resources/chessboard.jpg')
 
     def __init__(self):
@@ -12,4 +12,4 @@ class Chess(pyglet.window.Window):
                                     vsync=False)
 
     def on_draw(self):
-        self.chessboard.blit(0,0)
+        self.chessboard.blit(0, 0)
