@@ -13,12 +13,3 @@ class Chess(pyglet.window.Window):
 
     def on_draw(self):
         self.chessboard.blit(0,0)
-
-
-def main():
-    mygame = Chess()
-    pyglet.app.run()
-
-
-if __name__ == '__main__':
-    main()
