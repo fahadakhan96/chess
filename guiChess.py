@@ -1,4 +1,5 @@
 import pyglet
+import Pieces as p
 
 
 class Chess(pyglet.window.Window):
@@ -13,3 +14,4 @@ class Chess(pyglet.window.Window):
 
     def on_draw(self):
         self.chessboard.blit(0, 0)
+        whitepawn1 = p.Pawn(16, 9.5)
