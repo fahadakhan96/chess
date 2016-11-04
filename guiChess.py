@@ -18,8 +18,12 @@ class Chess(pyglet.window.Window):
             self.blackpieces.append(p.Pawn(i, 6, False))
         self.whitepieces.append(p.Rook(0, 0))
         self.whitepieces.append(p.Rook(7, 0))
+        self.whitepieces.append(p.Knight(1, 0))
+        self.whitepieces.append(p.Knight(6, 0))
         self.blackpieces.append(p.Rook(0, 7, False))
         self.blackpieces.append(p.Rook(7, 7, False))
+        self.blackpieces.append(p.Knight(1, 7, False))
+        self.blackpieces.append(p.Knight(6, 7, False))
 
     def on_draw(self):
         self.chessboard.blit(0, 0)

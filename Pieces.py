@@ -39,3 +39,12 @@ class Rook(Piece):
         else:
             self.pieceimage = spritesheet[BLACK_ROOK]
         self.piecesprite = pyglet.sprite.Sprite(self.pieceimage, self.x * 75, self.y * 75)
+
+class Knight(Piece):
+    def __init__(self, x, y, type=True):
+        super(Knight, self).__init__(x, y, type)
+        if self.white:
+            self.pieceimage = spritesheet[WHITE_KNIGHT]
+        else:
+            self.pieceimage = spritesheet[BLACK_KNIGHT]
+        self.piecesprite = pyglet.sprite.Sprite(self.pieceimage, self.x * 75, self.y * 75)
