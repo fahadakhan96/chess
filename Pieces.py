@@ -1,29 +1,41 @@
 import pyglet
 
 
-class Piece:
+class Piece(object):
     white = True
+    piecesprite = None
     captured = False
     x = 0
     y = 0
 
-
-class Pawn(object, Piece):
-    def __init__(self, x, y):
+    def __init__(self, x, y, type):
         self.x = x
         self.y = y
+        self.white = type
         self.captured = False
-        self.pieceimage = pyglet.resource.image('resources/whitepawn.png')
-        self.piecesprite = pyglet.sprite.Sprite(self.pieceimage, self.x, self.y)
+
+    def Draw(self):
         self.piecesprite.draw()
 
-    '''def checkMove(self, x, y, piece):
-        if y == self.y + 1 and x == self.x:
-            return True
-        if self.y == 1 and y == self.y + 2:
-            return True
-        if y == self.y + 1:
-            if x == self.x + 1 or x == self.x - 1:
-                if piece is not None and piece.white is not self.white:
-                    return True'''
 
+class Pawn(Piece):
+    def __init__(self, x, y, type=True):
+        super(Pawn, self).__init__(x, y, type)
+        if self.white:
+            self.pieceimage = pyglet.resource.image('resources/whitepawn.png')
+        else:
+            self.pieceimage = pyglet.resource.image('resources/blackpawn.png')
+        self.piecesprite = pyglet.sprite.Sprite(self.pieceimage, self.x * 75 + 16, self.y * 75 + 9.5)
+
+
+class Rook(Piece):
+    def __init__(self, x, y, type=True):
+        super(Rook, self).__init__(x, y, type)
+        if self.white:
+            self.pieceimage = pyglet.resource.image('resources/whiterook.png')
+        else:
+            self.pieceimage = pyglet.resource.image('resources/blackrook.png')
+        self.piecesprite = pyglet.sprite.Sprite(self.pieceimage, self.x * 75 + 13.5, self.y * 75 + 9.5)
+
+class Knight(Piece):
+    def __init__(self)
