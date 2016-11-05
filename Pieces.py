@@ -42,17 +42,24 @@ class Pawn(Piece):
         x = self.piecesprite.x//75
         y = self.piecesprite.y//75
         ListOfMoves = []
-        if self.white:
-            if board[y+1][x] is None:
+        if self.white and y < 7:
+            if board[y + 1][x] is None:
                 ListOfMoves.append((y + 1, x))
-                if y == 1 and board[y+2][x] is None:
+                if y == 1 and board[y + 2][x] is None:
                     ListOfMoves.append((y + 2, x))
-        else:
+            if x < 7 and board[y+1][x+1] is not None:
+                ListOfMoves.append((y + 1, x + 1))
+            if x > 0 and board[y+1][x-1] is not None:
+                ListOfMoves.append((y + 1, x - 1))
+        elif not self.white and y > 0:
             if board[y-1][x] is None:
                 ListOfMoves.append((y - 1, x))
                 if y == 6 and board[y-2][x] is None:
                     ListOfMoves.append((y - 2, x))
-                print ListOfMoves
+            if x < 7 and board[y-1][x+1] is not None:
+                ListOfMoves.append((y - 1, x + 1))
+            if x > 0 and board[y-1][x-1] is not None:
+                ListOfMoves.append((y - 1, x - 1))
         return ListOfMoves
 
 

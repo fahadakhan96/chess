@@ -39,8 +39,8 @@ class Chess(pyglet.window.Window):
         self.chessboard.blit(0, 0)
         for i in range(8):
             for j in range(8):
-                self.validsprites[i][j].draw()
                 if self.board[i][j] is not None: self.board[i][j].Draw()
+                self.validsprites[i][j].draw()
 
     def on_mouse_press(self, x, y, button, modifiers):
         boardX = x//75
@@ -56,8 +56,9 @@ class Chess(pyglet.window.Window):
                         self.validsprites[move[0]][move[1]].visible = True
         else:
             if self.validsprites[boardY][boardX].visible:
+                self.board[boardY][boardX] = self.board[self.currentPos[0]][self.currentPos[1]]
                 self.board[self.currentPos[0]][self.currentPos[1]].ChangeLocation(boardX, boardY)
-                self.board[self.currentPos[0]][self.currentPos[1]], self.board[boardY][boardX] = self.board[boardY][boardX], self.board[self.currentPos[0]][self.currentPos[1]]
+                self.board[self.currentPos[0]][self.currentPos[1]] = None
                 self.currentPos = (-1, -1)
                 for row in self.validsprites:
                     for sprite in row:
