@@ -76,8 +76,35 @@ class Rook(Piece):
         x = self.piecesprite.x // 75
         y = self.piecesprite.y // 75
         ListOfMoves = []
-        #for i in range(x, -1, -1):
-            #if
+        if y > 0:
+            for i in range(y - 1, -1, -1):
+                if board[i][x] is not None:
+                    if board[i][x].white != self.white:
+                        ListOfMoves.append((i, x))
+                    break
+                ListOfMoves.append((i, x))
+        if y < 7:
+            for i in range(y + 1, 8):
+                if board[i][x] is not None:
+                    if board[i][x].white != self.white:
+                        ListOfMoves.append((i, x))
+                    break
+                ListOfMoves.append((i, x))
+        if x > 0:
+            for i in range(x - 1, -1, -1):
+                if board[y][i] is not None:
+                    if board[y][i].white != self.white:
+                        ListOfMoves.append((y, i))
+                    break
+                ListOfMoves.append((y, i))
+        if x < 7:
+            for i in range(x + 1, 8):
+                if board[y][i] is not None:
+                    if board[y][i].white != self.white:
+                        ListOfMoves.append((y, i))
+                    break
+                ListOfMoves.append((y, i))
+        return ListOfMoves
 
 
 class Knight(Piece):
