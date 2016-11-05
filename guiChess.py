@@ -48,9 +48,12 @@ class Chess(pyglet.window.Window):
         if self.currentPos[0] < 0 and self.currentPos[1] < 0:
             if self.board[boardY][boardX] is not None:
                 self.currentPos = (boardY, boardX)
-                ValidMoves = self.board[boardY][boardX].GetValidMoves()
-                for move in ValidMoves:
-                    self.validsprites[move[0]][move[1]].visible = True
+                ValidMoves = self.board[boardY][boardX].GetValidMoves(self.board)
+                if len(ValidMoves) == 0:
+                    self.currentPos = (-1, -1)
+                else:
+                    for move in ValidMoves:
+                        self.validsprites[move[0]][move[1]].visible = True
         else:
             if self.validsprites[boardY][boardX].visible:
                 self.board[self.currentPos[0]][self.currentPos[1]].ChangeLocation(boardX, boardY)

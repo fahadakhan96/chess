@@ -38,19 +38,22 @@ class Pawn(Piece):
             self.pieceimage = spritesheet[BLACK_PAWN]
         self.piecesprite = pyglet.sprite.Sprite(self.pieceimage, x * 75, y * 75)
 
-    def GetValidMoves(self):
+    def GetValidMoves(self, board):
+        x = self.piecesprite.x//75
+        y = self.piecesprite.y//75
         ListOfMoves = []
         if self.white:
-            ListOfMoves.append((self.piecesprite.y//75 + 1, self.piecesprite.x//75))
-            if (self.piecesprite.y//75 == 1):
-                ListOfMoves.append((self.piecesprite.y//75 + 2, self.piecesprite.x//75))
-            return ListOfMoves
+            if board[y+1][x] is None:
+                ListOfMoves.append((y + 1, x))
+                if y == 1 and board[y+2][x] is None:
+                    ListOfMoves.append((y + 2, x))
         else:
-            ListOfMoves.append((self.piecesprite.y // 75 - 1, self.piecesprite.x // 75))
-            if (self.piecesprite.y // 75 == 6):
-                ListOfMoves.append((self.piecesprite.y // 75 - 2, self.piecesprite.x // 75))
-            print ListOfMoves
-            return ListOfMoves
+            if board[y-1][x] is None:
+                ListOfMoves.append((y - 1, x))
+                if y == 6 and board[y-2][x] is None:
+                    ListOfMoves.append((y - 2, x))
+                print ListOfMoves
+        return ListOfMoves
 
 
 class Rook(Piece):
