@@ -3,13 +3,14 @@ import pyglet
 spriteimage = pyglet.resource.image('resources/spritesheet.png')
 spritesheet = pyglet.image.ImageGrid(spriteimage, 2, 6)
 BLACK_KING, BLACK_QUEEN, BLACK_BISHOP, BLACK_KNIGHT, BLACK_ROOK, BLACK_PAWN, WHITE_KING, WHITE_QUEEN, WHITE_BISHOP, \
-    WHITE_KNIGHT, WHITE_ROOK, WHITE_PAWN = range(12)
+WHITE_KNIGHT, WHITE_ROOK, WHITE_PAWN = range(12)
 
 
 class Piece(object):
     white = True
     piecesprite = None
     captured = False
+
     # x = 0
     # y = 0
 
@@ -39,26 +40,26 @@ class Pawn(Piece):
         self.piecesprite = pyglet.sprite.Sprite(self.pieceimage, x * 75, y * 75)
 
     def GetValidMoves(self, board):
-        x = self.piecesprite.x//75
-        y = self.piecesprite.y//75
+        x = self.piecesprite.x // 75
+        y = self.piecesprite.y // 75
         ListOfMoves = []
         if self.white and y < 7:
             if board[y + 1][x] is None:
                 ListOfMoves.append((y + 1, x))
                 if y == 1 and board[y + 2][x] is None:
                     ListOfMoves.append((y + 2, x))
-            if x < 7 and board[y+1][x+1] is not None and not board[y+1][x+1].white:
+            if x < 7 and board[y + 1][x + 1] is not None and not board[y + 1][x + 1].white:
                 ListOfMoves.append((y + 1, x + 1))
-            if x > 0 and board[y+1][x-1] is not None and not board[y+1][x-1].white:
+            if x > 0 and board[y + 1][x - 1] is not None and not board[y + 1][x - 1].white:
                 ListOfMoves.append((y + 1, x - 1))
         elif not self.white and y > 0:
-            if board[y-1][x] is None:
+            if board[y - 1][x] is None:
                 ListOfMoves.append((y - 1, x))
-                if y == 6 and board[y-2][x] is None:
+                if y == 6 and board[y - 2][x] is None:
                     ListOfMoves.append((y - 2, x))
-            if x < 7 and board[y-1][x+1] is not None and board[y-1][x+1].white:
+            if x < 7 and board[y - 1][x + 1] is not None and board[y - 1][x + 1].white:
                 ListOfMoves.append((y - 1, x + 1))
-            if x > 0 and board[y-1][x-1] is not None and board[y-1][x-1].white:
+            if x > 0 and board[y - 1][x - 1] is not None and board[y - 1][x - 1].white:
                 ListOfMoves.append((y - 1, x - 1))
         return ListOfMoves
 
@@ -121,40 +122,41 @@ class Knight(Piece):
         y = self.piecesprite.y // 75
         ListOfMoves = []
         try:
-            if board[y+2][x+1] is None or self.white != board[y+2][x+1].white:
-                ListOfMoves.append((y+2, x+1))
+            if board[y + 2][x + 1] is None or self.white != board[y + 2][x + 1].white:
+                ListOfMoves.append((y + 2, x + 1))
         except IndexError:
             pass
         try:
-            if x > 0 and (board[y+2][x-1] is None or self.white != board[y+2][x-1].white):
-                ListOfMoves.append((y+2, x-1))
+            if x > 0 and (board[y + 2][x - 1] is None or self.white != board[y + 2][x - 1].white):
+                ListOfMoves.append((y + 2, x - 1))
         except IndexError:
             pass
         try:
-            if board[y+1][x+2] is None or self.white != board[y+1][x+2].white:
-                ListOfMoves.append((y+1, x+2))
+            if board[y + 1][x + 2] is None or self.white != board[y + 1][x + 2].white:
+                ListOfMoves.append((y + 1, x + 2))
         except IndexError:
             pass
         try:
-            if x > 1 and (board[y+1][x-2] is None or self.white != board[y+1][x-2].white):
-                ListOfMoves.append((y+1, x-2))
+            if x > 1 and (board[y + 1][x - 2] is None or self.white != board[y + 1][x - 2].white):
+                ListOfMoves.append((y + 1, x - 2))
         except IndexError:
             pass
         try:
-            if y > 0 and (board[y-1][x+2] is None or self.white != board[y-1][x+2].white):
-                ListOfMoves.append((y-1, x+2))
+            if y > 0 and (board[y - 1][x + 2] is None or self.white != board[y - 1][x + 2].white):
+                ListOfMoves.append((y - 1, x + 2))
         except IndexError:
             pass
         try:
-            if y > 1 and (board[y-2][x+1] is None or self.white != board[y-2][x+1].white):
-                ListOfMoves.append((y-2, x+1))
+            if y > 1 and (board[y - 2][x + 1] is None or self.white != board[y - 2][x + 1].white):
+                ListOfMoves.append((y - 2, x + 1))
         except IndexError:
             pass
-        if x > 1 and y > 0 and (board[y-1][x-2] is None or self.white != board[y-1][x-2].white):
-            ListOfMoves.append((y-1, x-2))
-        if x > 0 and y > 1 and (board[y-2][x-1] is None or self.white != board[y-2][x-1].white):
-            ListOfMoves.append((y-2, x-1))
+        if x > 1 and y > 0 and (board[y - 1][x - 2] is None or self.white != board[y - 1][x - 2].white):
+            ListOfMoves.append((y - 1, x - 2))
+        if x > 0 and y > 1 and (board[y - 2][x - 1] is None or self.white != board[y - 2][x - 1].white):
+            ListOfMoves.append((y - 2, x - 1))
         return ListOfMoves
+
 
 class Bishop(Piece):
     def __init__(self, x, y, type=True):
@@ -164,6 +166,51 @@ class Bishop(Piece):
         else:
             self.pieceimage = spritesheet[BLACK_BISHOP]
         self.piecesprite = pyglet.sprite.Sprite(self.pieceimage, x * 75, y * 75)
+
+    def GetValidMoves(self, board):
+        x = self.piecesprite.x // 75
+        y = self.piecesprite.y // 75
+        ListOfMoves = []
+        for i in range(1, 8):
+            if y-i < 0 or x-i < 0:
+                break
+            if board[y-i][x-i] is not None:
+                if board[y-i][x-i].white != self.white:
+                    ListOfMoves.append((y-i, x-i))
+                break
+            ListOfMoves.append((y-i, x-i))
+        for i in range(1, 8):
+            try:
+                if board[y+i][x+i] is not None:
+                    if board[y+i][x+i].white != self.white:
+                        ListOfMoves.append((y+i, x+i))
+                    break
+                ListOfMoves.append((y+i, x+i))
+            except IndexError:
+                break
+        for i in range(1, 8):
+            try:
+                if x-i < 0:
+                    break
+                if board[y+i][x-i] is not None:
+                    if board[y+i][x-i].white != self.white:
+                        ListOfMoves.append((y+i, x-i))
+                    break
+                ListOfMoves.append((y+i, x-i))
+            except IndexError:
+                break
+        for i in range(1, 8):
+            try:
+                if y - i < 0:
+                    break
+                if board[y-i][x+i] is not None:
+                    if board[y-i][x+i].white != self.white:
+                        ListOfMoves.append((y-i, x+i))
+                    break
+                ListOfMoves.append((y-i, x+i))
+            except IndexError:
+                break
+        return ListOfMoves
 
 
 class Queen(Piece):
@@ -175,6 +222,79 @@ class Queen(Piece):
             self.pieceimage = spritesheet[BLACK_QUEEN]
         self.piecesprite = pyglet.sprite.Sprite(self.pieceimage, x * 75, y * 75)
 
+    def GetValidMoves(self, board):
+        x = self.piecesprite.x // 75
+        y = self.piecesprite.y // 75
+        ListOfMoves = []
+        if y > 0:
+            for i in range(y - 1, -1, -1):
+                if board[i][x] is not None:
+                    if board[i][x].white != self.white:
+                        ListOfMoves.append((i, x))
+                    break
+                ListOfMoves.append((i, x))
+        if y < 7:
+            for i in range(y + 1, 8):
+                if board[i][x] is not None:
+                    if board[i][x].white != self.white:
+                        ListOfMoves.append((i, x))
+                    break
+                ListOfMoves.append((i, x))
+        if x > 0:
+            for i in range(x - 1, -1, -1):
+                if board[y][i] is not None:
+                    if board[y][i].white != self.white:
+                        ListOfMoves.append((y, i))
+                    break
+                ListOfMoves.append((y, i))
+        if x < 7:
+            for i in range(x + 1, 8):
+                if board[y][i] is not None:
+                    if board[y][i].white != self.white:
+                        ListOfMoves.append((y, i))
+                    break
+                ListOfMoves.append((y, i))
+        for i in range(1, 8):
+            if y-i < 0 or x-i < 0:
+                break
+            if board[y-i][x-i] is not None:
+                if board[y-i][x-i].white != self.white:
+                    ListOfMoves.append((y-i, x-i))
+                break
+            ListOfMoves.append((y-i, x-i))
+        for i in range(1, 8):
+            try:
+                if board[y+i][x+i] is not None:
+                    if board[y+i][x+i].white != self.white:
+                        ListOfMoves.append((y+i, x+i))
+                    break
+                ListOfMoves.append((y+i, x+i))
+            except IndexError:
+                break
+        for i in range(1, 8):
+            try:
+                if x-i < 0:
+                    break
+                if board[y+i][x-i] is not None:
+                    if board[y+i][x-i].white != self.white:
+                        ListOfMoves.append((y+i, x-i))
+                    break
+                ListOfMoves.append((y+i, x-i))
+            except IndexError:
+                break
+        for i in range(1, 8):
+            try:
+                if y - i < 0:
+                    break
+                if board[y-i][x+i] is not None:
+                    if board[y-i][x+i].white != self.white:
+                        ListOfMoves.append((y-i, x+i))
+                    break
+                ListOfMoves.append((y-i, x+i))
+            except IndexError:
+                break
+        return ListOfMoves
+
 
 class King(Piece):
     def __init__(self, x, y, type=True):
@@ -184,3 +304,40 @@ class King(Piece):
         else:
             self.pieceimage = spritesheet[BLACK_KING]
         self.piecesprite = pyglet.sprite.Sprite(self.pieceimage, x * 75, y * 75)
+
+    def GetValidMoves(self, board):
+        x = self.piecesprite.x // 75
+        y = self.piecesprite.y // 75
+        ListOfMoves = []
+        try:
+            if x > 0 and (board[y+1][x-1] is None or self.white != board[y+1][x-1].white):
+                ListOfMoves.append((y+1, x-1))
+        except IndexError:
+            pass
+        try:
+            if board[y+1][x] is None or self.white != board[y+1][x].white:
+                ListOfMoves.append((y+1, x))
+        except IndexError:
+            pass
+        try:
+            if board[y+1][x+1] is None or self.white != board[y+1][x+1].white:
+                ListOfMoves.append((y+1, x+1))
+        except IndexError:
+            pass
+        try:
+            if board[y][x+1] is None or self.white != board[y][x+1].white:
+                ListOfMoves.append((y, x+1))
+        except IndexError:
+            pass
+        try:
+            if y > 0 and (board[y-1][x+1] is None or self.white != board[y-1][x+1].white):
+                ListOfMoves.append((y-1, x+1))
+        except IndexError:
+            pass
+        if y > 0 and (board[y-1][x] is None or self.white != board[y-1][x].white):
+            ListOfMoves.append((y-1, x))
+        if y > 0 and x > 0 and (board[y-1][x-1] is None or self.white != board[y-1][x-1].white):
+            ListOfMoves.append((y-1, x-1))
+        if x > 0 and (board[y][x-1] is None or self.white != board[y][x-1].white):
+            ListOfMoves.append((y, x-1))
+        return ListOfMoves
