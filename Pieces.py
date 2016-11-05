@@ -2,13 +2,8 @@ import pyglet
 
 spriteimage = pyglet.resource.image('resources/spritesheet.png')
 spritesheet = pyglet.image.ImageGrid(spriteimage, 2, 6)
-<<<<<<< HEAD
-BLACK_KING, BLACK_QUEEN, BLACK_BISHOP, BLACK_KNIGHT, BLACK_ROOK, BLACK_PAWN, WHITE_KING, WHITE_QUEEN, WHITE_BISHOP, WHITE_KNIGHT, WHITE_ROOK, WHITE_PAWN = range(
-    12)
-=======
 BLACK_KING, BLACK_QUEEN, BLACK_BISHOP, BLACK_KNIGHT, BLACK_ROOK, BLACK_PAWN, WHITE_KING, WHITE_QUEEN, WHITE_BISHOP, \
     WHITE_KNIGHT, WHITE_ROOK, WHITE_PAWN = range(12)
->>>>>>> boardchange
 
 
 class Piece(object):
@@ -57,8 +52,6 @@ class Pawn(Piece):
             print ListOfMoves
             return ListOfMoves
 
-    #def getMoves(self, ):
-
 
 class Rook(Piece):
     def __init__(self, x, y, type=True):
@@ -80,7 +73,6 @@ class Knight(Piece):
         self.piecesprite = pyglet.sprite.Sprite(self.pieceimage, x * 75, y * 75)
 
 
-
 class Bishop(Piece):
     def __init__(self, x, y, type=True):
         super(Bishop, self).__init__(type)
@@ -89,7 +81,6 @@ class Bishop(Piece):
         else:
             self.pieceimage = spritesheet[BLACK_BISHOP]
         self.piecesprite = pyglet.sprite.Sprite(self.pieceimage, x * 75, y * 75)
-
 
 
 class Queen(Piece):
@@ -102,7 +93,6 @@ class Queen(Piece):
         self.piecesprite = pyglet.sprite.Sprite(self.pieceimage, x * 75, y * 75)
 
 
-
 class King(Piece):
     def __init__(self, x, y, type=True):
         super(King, self).__init__(type)
@@ -110,8 +100,4 @@ class King(Piece):
             self.pieceimage = spritesheet[WHITE_KING]
         else:
             self.pieceimage = spritesheet[BLACK_KING]
-<<<<<<< HEAD
-        self.piecesprite = pyglet.sprite.Sprite(self.pieceimage, self.x * 75, self.y * 75)
-=======
         self.piecesprite = pyglet.sprite.Sprite(self.pieceimage, x * 75, y * 75)
->>>>>>> boardchange
