@@ -4,13 +4,29 @@ import Pieces as p
 
 class Chess(pyglet.window.Window):
     chessboard = pyglet.resource.image('resources/chessboard.png')
+    validImg = pyglet.resource.image('resources/validmove.png')
+    hoverImg = pyglet.resource.image('resources/hoversquare.png')
 
     def __init__(self):
         super(Chess, self).__init__(600, 600,
                                     resizable=False,
-                                    caption='Sudoku',
+                                    caption='Chess',
                                     config=pyglet.gl.Config(double_buffer=True),
                                     vsync=False)
+        self.validsprites = []
+        self.hoversprites = []
+        for i in range(8):
+            rowsprites = []
+            rowsprites2 = []
+            for j in range(8):
+                sprite = pyglet.sprite.Sprite(self.validImg, 75 * i, 75 * j)
+                sprite.visible = False
+                rowsprites.append(sprite)
+                sprite2 = pyglet.sprite.Sprite(self.hoverImg, 75 * i, 75 * j)
+                sprite2.visible = False
+                rowsprites2.append(sprite2)
+            self.validsprites.append(rowsprites)
+            self.hoversprites.append(rowsprites2)
         self.whitepieces = []
         self.blackpieces = []
         for i in range(8):
@@ -32,9 +48,22 @@ class Chess(pyglet.window.Window):
         self.blackpieces.append(p.Bishop(5, 7, False))
         self.blackpieces.append(p.Queen(3, 7, False))
         self.blackpieces.append(p.King(4, 7, False))
+        self.board = [['wR', 'wK', 'wB', 'wQ', 'wKK', 'wB', 'wK', 'wR'],
+                      ['wP', 'wP', 'wP', 'wP', 'wP', 'wP', 'wP', 'wP'],
+                      ['', '', '', '', '', '', '', ''],
+                      ['', '', '', '', '', '', '', ''],
+                      ['', '', '', '', '', '', '', ''],
+                      ['', '', '', '', '', '', '', ''],
+                      ['bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP'],
+                      ['bR', 'bK', 'bB', 'bQ', 'bKK', 'bB', 'bK', 'bR']]
 
     def on_draw(self):
         self.chessboard.blit(0, 0)
         for i in range(len(self.whitepieces)):
             self.whitepieces[i].Draw()
             self.blackpieces[i].Draw()
+
+    '''def on_mouse_press(self, x, y, button, modifiers):
+        boardX = x//75
+        boardY = y//75'''
+
