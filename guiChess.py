@@ -16,7 +16,9 @@ class Chess(pyglet.window.Window):
                                     caption='Sudoku',
                                     config=pyglet.gl.Config(double_buffer=True),
                                     vsync=False)
-        self.board = [[p.Rook(0, 0), p.Knight(1, 0), p.Bishop(2, 0), p.Queen(3, 0), p.King(4, 0), p.Bishop(5, 0),
+        self.wKing = p.King(4, 0)
+        self.bKing = p.King(4, 7, False)
+        self.board = [[p.Rook(0, 0), p.Knight(1, 0), p.Bishop(2, 0), p.Queen(3, 0), self.wKing, p.Bishop(5, 0),
                        p.Knight(6, 0), p.Rook(7,0)],
                       [p.Pawn(i, 1) for i in range(8)],
                       [None for i in range(8)],
@@ -25,7 +27,7 @@ class Chess(pyglet.window.Window):
                       [None for i in range(8)],
                       [p.Pawn(i, 6, False) for i in range(8)],
                       [p.Rook(0, 7, False), p.Knight(1, 7, False), p.Bishop(2, 7, False), p.Queen(3, 7, False),
-                       p.King(4, 7, False), p.Bishop(5, 7, False), p.Knight(6, 7, False), p.Rook(7, 7, False)]]
+                       self.bKing, p.Bishop(5, 7, False), p.Knight(6, 7, False), p.Rook(7, 7, False)]]
         self.validsprites = []
         for i in range(8):
             rowsprites = []
@@ -73,6 +75,18 @@ class Chess(pyglet.window.Window):
                     self.board[self.currentPos[0]][self.currentPos[1]].ChangeLocation(boardX, boardY)
                     self.board[self.currentPos[0]][self.currentPos[1]] = None
                     self.currentPos = (-1, -1)
+                    if self.move:
+                        if self.bKing.InCheck(self.board):
+                            self.bKing.danger.visible = True
+                        if self.wKing.danger.visible:
+                            if not self.wKing.InCheck(self.board):
+                                self.wKing.danger.visible = False
+                    else:
+                        if self.wKing.InCheck(self.board):
+                            self.wKing.danger.visible = True
+                        if self.bKing.danger.visible:
+                            if not self.bKing.InCheck(self.board):
+                                self.bKing.danger.visible = False
                     self.move = not self.move
                     for row in self.validsprites:
                         for sprite in row:

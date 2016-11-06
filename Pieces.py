@@ -2,6 +2,7 @@ import pyglet
 
 spriteimage = pyglet.resource.image('resources/spritesheet.png')
 spritesheet = pyglet.image.ImageGrid(spriteimage, 2, 6)
+dangerImg = pyglet.resource.image('resources/danger.png')
 BLACK_KING, BLACK_QUEEN, BLACK_BISHOP, BLACK_KNIGHT, BLACK_ROOK, BLACK_PAWN, WHITE_KING, WHITE_QUEEN, WHITE_BISHOP, \
 WHITE_KNIGHT, WHITE_ROOK, WHITE_PAWN = range(12)
 
@@ -304,6 +305,14 @@ class King(Piece):
         else:
             self.pieceimage = spritesheet[BLACK_KING]
         self.piecesprite = pyglet.sprite.Sprite(self.pieceimage, x * 75, y * 75)
+        self.danger = pyglet.sprite.Sprite(dangerImg, x * 75, y * 75)
+        self.danger.visible = False
+
+    def ChangeLocation(self, x, y):
+        self.piecesprite.x = x * 75
+        self.piecesprite.y = y * 75
+        self.danger.x = x * 75
+        self.danger.y = y * 75
 
     def GetValidMoves(self, board):
         x = self.piecesprite.x // 75
@@ -341,3 +350,18 @@ class King(Piece):
         if x > 0 and (board[y][x-1] is None or self.white != board[y][x-1].white):
             ListOfMoves.append((y, x-1))
         return ListOfMoves
+
+    def Draw(self):
+        self.piecesprite.draw()
+        self.danger.draw()
+
+    def InCheck(self, board):
+        x = self.piecesprite.x // 75
+        y = self.piecesprite.y // 75
+        for row in board:
+            for piece in row:
+                if piece is not None and piece.white != self.white:
+                    validmoves = piece.GetValidMoves(board)
+                    if (y, x) in validmoves:
+                        return True
+        return False
