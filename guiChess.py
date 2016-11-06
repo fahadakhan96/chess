@@ -52,7 +52,10 @@ class Chess(pyglet.window.Window):
             if self.currentPos[0] < 0 and self.currentPos[1] < 0:
                 if self.board[boardY][boardX] is not None and self.move == self.board[boardY][boardX].white:
                     self.currentPos = (boardY, boardX)
-                    ValidMoves = self.board[boardY][boardX].GetValidMoves(self.board)
+                    if self.move:
+                        ValidMoves = self.board[boardY][boardX].GetValidMoves(self.board, self.wKing)
+                    else:
+                        ValidMoves = self.board[boardY][boardX].GetValidMoves(self.board, self.bKing)
                     if len(ValidMoves) == 0:
                         self.currentPos = (-1, -1)
                     else:
@@ -63,7 +66,10 @@ class Chess(pyglet.window.Window):
                     for sprite in row:
                         sprite.visible = False
                 self.currentPos = (boardY, boardX)
-                ValidMoves = self.board[boardY][boardX].GetValidMoves(self.board)
+                if self.move:
+                    ValidMoves = self.board[boardY][boardX].GetValidMoves(self.board, self.wKing)
+                else:
+                    ValidMoves = self.board[boardY][boardX].GetValidMoves(self.board, self.bKing)
                 if len(ValidMoves) == 0:
                     self.currentPos = (-1, -1)
                 else:

@@ -1,4 +1,5 @@
 import pyglet
+from copy import deepcopy
 
 spriteimage = pyglet.resource.image('resources/spritesheet.png')
 spritesheet = pyglet.image.ImageGrid(spriteimage, 2, 6)
@@ -21,6 +22,28 @@ class Piece(object):
         self.white = type
         self.captured = False
 
+    def MakeMove(self, board, move, king):
+        x = self.piecesprite.x // 75
+        y = self.piecesprite.y // 75
+        board[move[0]][move[1]] = board[y][x]
+        board[y][x] = None
+        self.piecesprite.x = move[1] * 75
+        self.piecesprite.y = move[0] * 75
+        check = king.InCheck(board)
+        print check
+        self.piecesprite.x = x * 75
+        self.piecesprite.y = y * 75
+        return check
+
+    def GetValidMoves(self, board, king):
+        ListOfMoves = self.GetThreatSquares(board)
+        ValidMoves = []
+        for move in ListOfMoves:
+            tempboard = deepcopy(board)                                         # Can be optimized. Edit MakeMove function to simply revert any changes
+            if not self.MakeMove(tempboard, move, king):
+                ValidMoves.append(move)
+        return ValidMoves
+
     def ChangeLocation(self, x, y):
         # self.x = x
         # self.y = y
@@ -40,7 +63,7 @@ class Pawn(Piece):
             self.pieceimage = spritesheet[BLACK_PAWN]
         self.piecesprite = pyglet.sprite.Sprite(self.pieceimage, x * 75, y * 75)
 
-    def GetValidMoves(self, board):
+    def GetThreatSquares(self, board):
         x = self.piecesprite.x // 75
         y = self.piecesprite.y // 75
         ListOfMoves = []
@@ -74,7 +97,7 @@ class Rook(Piece):
             self.pieceimage = spritesheet[BLACK_ROOK]
         self.piecesprite = pyglet.sprite.Sprite(self.pieceimage, x * 75, y * 75)
 
-    def GetValidMoves(self, board):
+    def GetThreatSquares(self, board):
         x = self.piecesprite.x // 75
         y = self.piecesprite.y // 75
         ListOfMoves = []
@@ -118,7 +141,7 @@ class Knight(Piece):
             self.pieceimage = spritesheet[BLACK_KNIGHT]
         self.piecesprite = pyglet.sprite.Sprite(self.pieceimage, x * 75, y * 75)
 
-    def GetValidMoves(self, board):
+    def GetThreatSquares(self, board):
         x = self.piecesprite.x // 75
         y = self.piecesprite.y // 75
         ListOfMoves = []
@@ -168,7 +191,7 @@ class Bishop(Piece):
             self.pieceimage = spritesheet[BLACK_BISHOP]
         self.piecesprite = pyglet.sprite.Sprite(self.pieceimage, x * 75, y * 75)
 
-    def GetValidMoves(self, board):
+    def GetThreatSquares(self, board):
         x = self.piecesprite.x // 75
         y = self.piecesprite.y // 75
         ListOfMoves = []
@@ -223,7 +246,7 @@ class Queen(Piece):
             self.pieceimage = spritesheet[BLACK_QUEEN]
         self.piecesprite = pyglet.sprite.Sprite(self.pieceimage, x * 75, y * 75)
 
-    def GetValidMoves(self, board):
+    def GetThreatSquares(self, board):
         x = self.piecesprite.x // 75
         y = self.piecesprite.y // 75
         ListOfMoves = []
@@ -314,7 +337,7 @@ class King(Piece):
         self.danger.x = x * 75
         self.danger.y = y * 75
 
-    def GetValidMoves(self, board):
+    def GetThreatSquares(self, board):
         x = self.piecesprite.x // 75
         y = self.piecesprite.y // 75
         ListOfMoves = []
@@ -361,7 +384,7 @@ class King(Piece):
         for row in board:
             for piece in row:
                 if piece is not None and piece.white != self.white:
-                    validmoves = piece.GetValidMoves(board)
+                    validmoves = piece.GetThreatSquares(board)
                     if (y, x) in validmoves:
                         return True
         return False
