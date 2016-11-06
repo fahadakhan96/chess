@@ -30,7 +30,6 @@ class Piece(object):
         self.piecesprite.x = move[1] * 75
         self.piecesprite.y = move[0] * 75
         check = king.InCheck(board)
-        print check
         self.piecesprite.x = x * 75
         self.piecesprite.y = y * 75
         return check
@@ -388,3 +387,14 @@ class King(Piece):
                     if (y, x) in validmoves:
                         return True
         return False
+
+    def NoValidMoves(self, board):
+        x = self.piecesprite.x // 75
+        y = self.piecesprite.y // 75
+        for row in board:
+            for piece in row:
+                if piece is not None and piece.white == self.white:
+                    validmoves = piece.GetValidMoves(board, self)
+                    if len(validmoves) > 0:
+                        return False
+        return True
