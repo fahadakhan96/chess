@@ -9,11 +9,12 @@ class Chess(pyglet.window.Window):
     # hoverImg = pyglet.resource.image('resources/hoversquare.png')
     currentPos = (-1, -1)
     move = True
+    promotion = False
 
     def __init__(self):
         super(Chess, self).__init__(600, 600,
                                     resizable=False,
-                                    caption='Sudoku',
+                                    caption='Chess',
                                     config=pyglet.gl.Config(double_buffer=True),
                                     vsync=False)
         self.wKing = p.King(4, 0)
@@ -44,6 +45,8 @@ class Chess(pyglet.window.Window):
             for j in range(8):
                 if self.board[i][j] is not None: self.board[i][j].Draw()
                 self.validsprites[i][j].draw()
+        #if self.promotion:
+
 
     def on_mouse_press(self, x, y, button, modifiers):
         if button == mouse.LEFT:
@@ -78,7 +81,9 @@ class Chess(pyglet.window.Window):
             else:
                 if self.validsprites[boardY][boardX].visible:
                     self.board[boardY][boardX] = self.board[self.currentPos[0]][self.currentPos[1]]
-                    self.board[self.currentPos[0]][self.currentPos[1]].ChangeLocation(boardX, boardY)
+                    self.board[self.currentPos[0]][self.currentPos[1]].ChangeLocation(boardX, boardY, self.board)
+                    if type(self.board[self.currentPos[0]][self.currentPos[1]]) is p.Pawn and (boardY == 0 or boardY == 7):
+                        self.PromotePawn(boardY, boardX)
                     self.board[self.currentPos[0]][self.currentPos[1]] = None
                     self.currentPos = (-1, -1)
                     if self.move:
@@ -106,6 +111,8 @@ class Chess(pyglet.window.Window):
                         for sprite in row:
                             sprite.visible = False
 
+    def PromotePawn(self, boardY, boardX):
+        self.board[boardY][boardX] = p.Queen(boardX, boardY, self.board[boardY][boardX].white)
 
     def update(self, dt):
         self.on_draw()

@@ -13,23 +13,22 @@ class Piece(object):
     piecesprite = None
     captured = False
 
-    # x = 0
-    # y = 0
-
     def __init__(self, type):
-        # self.x = x
-        # self.y = y
         self.white = type
         self.captured = False
 
     def MakeMove(self, board, move, king):
         x = self.piecesprite.x // 75
         y = self.piecesprite.y // 75
+        temp = board[y][x]
+        temp2 = board[move[0]][move[1]]
         board[move[0]][move[1]] = board[y][x]
         board[y][x] = None
         self.piecesprite.x = move[1] * 75
         self.piecesprite.y = move[0] * 75
         check = king.InCheck(board)
+        board[move[0]][move[1]] = temp2
+        board[y][x] = temp
         self.piecesprite.x = x * 75
         self.piecesprite.y = y * 75
         return check
@@ -38,12 +37,12 @@ class Piece(object):
         ListOfMoves = self.GetThreatSquares(board)
         ValidMoves = []
         for move in ListOfMoves:
-            tempboard = deepcopy(board)                                         # Can be optimized. Edit MakeMove function to simply revert any changes
-            if not self.MakeMove(tempboard, move, king):
+            # tempboard = deepcopy(board)                                         # Can be optimized. Edit MakeMove function to simply revert any changes
+            if not self.MakeMove(board, move, king):
                 ValidMoves.append(move)
         return ValidMoves
 
-    def ChangeLocation(self, x, y):
+    def ChangeLocation(self, x, y, board):
         # self.x = x
         # self.y = y
         self.piecesprite.x = x * 75
@@ -95,6 +94,12 @@ class Rook(Piece):
         else:
             self.pieceimage = spritesheet[BLACK_ROOK]
         self.piecesprite = pyglet.sprite.Sprite(self.pieceimage, x * 75, y * 75)
+        self.moved = False
+
+    def ChangeLocation(self, x, y, board):
+        self.piecesprite.x = x * 75
+        self.piecesprite.y = y * 75
+        self.moved = True
 
     def GetThreatSquares(self, board):
         x = self.piecesprite.x // 75
@@ -329,12 +334,44 @@ class King(Piece):
         self.piecesprite = pyglet.sprite.Sprite(self.pieceimage, x * 75, y * 75)
         self.danger = pyglet.sprite.Sprite(dangerImg, x * 75, y * 75)
         self.danger.visible = False
+        self.moved = False
 
-    def ChangeLocation(self, x, y):
+    def ChangeLocation(self, x, y, board):
+        if x == self.piecesprite.x // 75 + 2:
+            board[y][7].ChangeLocation(5, y, board)
+            board[y][5] = board[y][7]
+            board[y][7] = None
+            board[y][6] = self
+            board[y][4] = None
+        elif x == self.piecesprite.x // 75 - 2:
+            board[y][0].ChangeLocation(3, y, board)
+            board[y][3] = board[y][0]
+            board[y][0] = None
+            board[y][2] = self
+            board[y][4] = None
         self.piecesprite.x = x * 75
         self.piecesprite.y = y * 75
         self.danger.x = x * 75
         self.danger.y = y * 75
+        self.moved = True
+
+    def CheckCastling(self, board, right=True):
+        y = self.piecesprite.y // 75
+        if right:
+            for row in board:
+                for piece in row:
+                    if piece is not None and piece.white != self.white:
+                        ValidMoves = piece.GetThreatSquares(board)
+                        if (y, 5) in ValidMoves or (y, 6) in ValidMoves or (y, 4) in ValidMoves:
+                            return False
+        else:
+            for row in board:
+                for piece in row:
+                    if piece is not None and piece.white != self.white:
+                        ValidMoves = piece.GetThreatSquares(board)
+                        if (y, 4) in ValidMoves or (y, 3) in ValidMoves or (y, 2) in ValidMoves:
+                            return False
+        return True
 
     def GetThreatSquares(self, board):
         x = self.piecesprite.x // 75
@@ -387,6 +424,22 @@ class King(Piece):
                     if (y, x) in validmoves:
                         return True
         return False
+
+    def GetValidMoves(self, board, king):
+        y = self.piecesprite.y // 75
+        ListOfMoves = self.GetThreatSquares(board)
+        ValidMoves = []
+        for move in ListOfMoves:
+            if not self.MakeMove(board, move, king):
+                ValidMoves.append(move)
+        if not self.moved:
+            if type(board[y][7]) is Rook and not board[y][7].moved and board[y][5] is None and board[y][6] is None:
+                if self.CheckCastling(board):
+                    ValidMoves.append((y, 6))
+            if type(board[y][0]) is Rook and not board[y][0].moved and board[y][3] is None and board[y][2] is None and board[y][1]:
+                if self.CheckCastling(board, False):
+                    ValidMoves.append((y, 2))
+        return ValidMoves
 
     def NoValidMoves(self, board):
         x = self.piecesprite.x // 75
