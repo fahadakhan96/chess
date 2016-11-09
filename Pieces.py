@@ -1,5 +1,4 @@
 import pyglet
-from copy import deepcopy
 
 spriteimage = pyglet.resource.image('resources/spritesheet.png')
 spritesheet = pyglet.image.ImageGrid(spriteimage, 2, 6)
@@ -436,7 +435,8 @@ class King(Piece):
             if type(board[y][7]) is Rook and not board[y][7].moved and board[y][5] is None and board[y][6] is None:
                 if self.CheckCastling(board):
                     ValidMoves.append((y, 6))
-            if type(board[y][0]) is Rook and not board[y][0].moved and board[y][3] is None and board[y][2] is None and board[y][1]:
+            if type(board[y][0]) is Rook and not board[y][0].moved and board[y][3] is None and board[y][2] is None and board[y][1] is None:
+                print "left condition working"
                 if self.CheckCastling(board, False):
                     ValidMoves.append((y, 2))
         return ValidMoves
