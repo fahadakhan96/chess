@@ -11,9 +11,9 @@ A two-player chess game using python and pyglet. No computer AI. All rules imple
 ## How to run?
 1. Install Python 2.7 if not already installed.
 2. In cmd, type:
-'''cmd
+```cmd
 python -m pip install pyglet
-'''
+```
 3. Run *main.py*.
 
 ## How to play?
