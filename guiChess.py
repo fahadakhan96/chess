@@ -88,21 +88,21 @@ class Chess(pyglet.window.Window):
                 self.promotion = False
                 if not self.move:
                     if self.bKing.NoValidMoves(self.board) and not self.bKing.InCheck(self.board):
-                        print 'Stalemate!'
+                        print('Stalemate!')
                     if self.bKing.InCheck(self.board):
                         self.bKing.danger.visible = True
                         if self.bKing.NoValidMoves(self.board):
-                            print "Checkmate! White wins."
+                            print("Checkmate! White wins.")
                     if self.wKing.danger.visible:
                         if not self.wKing.InCheck(self.board):
                             self.wKing.danger.visible = False
                 else:
                     if self.wKing.NoValidMoves(self.board) and not self.wKing.InCheck(self.board):
-                        print 'Stalemate!'
+                        print('Stalemate!')
                     if self.wKing.InCheck(self.board):
                         self.wKing.danger.visible = True
                         if self.wKing.NoValidMoves(self.board):
-                            print "Checkmate! Black wins."
+                            print("Checkmate! Black wins.")
                     if self.bKing.danger.visible:
                         if not self.bKing.InCheck(self.board):
                             self.bKing.danger.visible = False
@@ -147,21 +147,21 @@ class Chess(pyglet.window.Window):
                         self.currentPos = (-1, -1)
                         if self.move:
                             if self.bKing.NoValidMoves(self.board) and not self.bKing.InCheck(self.board):
-                                print 'Stalemate!'
+                                print('Stalemate!')
                             if self.bKing.InCheck(self.board):
                                 self.bKing.danger.visible = True
                                 if self.bKing.NoValidMoves(self.board):
-                                    print "Checkmate! White wins."
+                                    print("Checkmate! White wins.")
                             if self.wKing.danger.visible:
                                 if not self.wKing.InCheck(self.board):
                                     self.wKing.danger.visible = False
                         else:
                             if self.wKing.NoValidMoves(self.board) and not self.wKing.InCheck(self.board):
-                                print 'Stalemate!'
+                                print('Stalemate!')
                             if self.wKing.InCheck(self.board):
                                 self.wKing.danger.visible = True
                                 if self.wKing.NoValidMoves(self.board):
-                                    print "Checkmate! Black wins."
+                                    print("Checkmate! Black wins.")
                             if self.bKing.danger.visible:
                                 if not self.bKing.InCheck(self.board):
                                     self.bKing.danger.visible = False

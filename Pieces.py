@@ -436,7 +436,7 @@ class King(Piece):
                 if self.CheckCastling(board):
                     ValidMoves.append((y, 6))
             if type(board[y][0]) is Rook and not board[y][0].moved and board[y][3] is None and board[y][2] is None and board[y][1] is None:
-                print "left condition working"
+                print("left condition working")
                 if self.CheckCastling(board, False):
                     ValidMoves.append((y, 2))
         return ValidMoves
