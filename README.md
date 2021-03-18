@@ -9,10 +9,10 @@ A two-player chess game using python and pyglet. No computer AI. All rules imple
 - Highlights king red when in check.
 
 ## How to run?
-1. Install Python 2.7 if not already installed.
+1. Install Python 3.5 or newer if not already installed.
 2. In cmd, type:
 ```cmd
-python -m pip install pyglet
+python3 -m pip install pyglet
 ```
 3. Run *main.py*.
 
